@@ -1,4 +1,5 @@
 import themidibus.*;
+import spout.*;
 
 boolean mode = true;
 int numberOfPoints = 0;
@@ -13,6 +14,7 @@ float dalpha;
 float[] x;
 float[] y;
 MidiBus myBus;
+Spout spout;
 
 void controllerChange(int channel, int number, int value) {
   // Receive a controllerChange
@@ -74,19 +76,22 @@ void noteOff(int channel, int pitch, int velocity) {
 }
 
 void setup(){
-  size(1920,1080);
-  fullScreen();
+  size(1920,1080, P3D);
+  textureMode(NORMAL);
   dalpha = TWO_PI / numberOfPoints;
   x = new float[numberOfPoints];
   y = new float[numberOfPoints];
   MidiBus.list();
   myBus = new MidiBus(this, 1, -1);
+  spout = new Spout(this);
+  spout.setSenderName("Spout from Processing");
 }
 
 void draw(){
   background(0);
   calcPlot();
   renderPlot();
+  spout.sendTexture();
 }
 
 void calcPlot(){
