@@ -1,8 +1,9 @@
-//import controlP5.*;
+import themidibus.*;
+
 boolean mode = true;
-int numberOfPoints = 200;
+int numberOfPoints = 0;
 float theta = 0.0;
-float amplitude = 200.0;
+float amplitude = 500.0;
 float xParam = 1;
 float yParam = 2;
 float xAmplitudeParam = 1.0;
@@ -11,15 +12,74 @@ float dtheta = 0.02;
 float dalpha;
 float[] x;
 float[] y;
-//ControlP5 MyController;
+MidiBus myBus;
+
+void controllerChange(int channel, int number, int value) {
+  // Receive a controllerChange
+  // 1 - prędkość
+  if (number == 1){
+     dtheta = (value - 64)/200.0;
+  }
+  // 2 - liczba punktów
+  else if (number == 2){
+     numberOfPoints = value;
+    dalpha = TWO_PI / numberOfPoints;
+    x = new float[numberOfPoints];
+    y = new float[numberOfPoints];
+  }
+  // 3, 4 - parametry x i y
+  else if (number == 3){
+    xParam = value; 
+  }
+  else if (number == 4){
+    yParam = value; 
+  }
+  // 5, 6 - skala po x i y
+  else if (number == 5){
+    xAmplitudeParam = value/100.0; 
+  }
+  else if (number == 6){
+    yAmplitudeParam = value/100.0;
+  }
+  println();
+  println("Controller Change:");
+  println("--------");
+  println("Channel:"+channel);
+  println("Number:"+number);
+  println("Value:"+value);
+}
+
+void noteOn(int channel, int pitch, int velocity) {
+  // Receive a noteOn
+  // PAD 1 - zmiana trybu
+  if (pitch == 36) {
+    mode = !mode;
+  }
+  println();
+  println("Note On:");
+  println("--------");
+  println("Channel:"+channel);
+  println("Pitch:"+pitch);
+  println("Velocity:"+velocity);
+}
+
+void noteOff(int channel, int pitch, int velocity) {
+  // Receive a noteOff
+  println();
+  println("Note Off:");
+  println("--------");
+  println("Channel:"+channel);
+  println("Pitch:"+pitch);
+  println("Velocity:"+velocity);
+}
 
 void setup(){
-  size(640,480);
+  size(1920,1080);
   dalpha = TWO_PI / numberOfPoints;
   x = new float[numberOfPoints];
   y = new float[numberOfPoints];
-  //MyController = new ControlP5(this);
-  //MyController.addSlider("slider", 0, 200, 128, 20, 100, 10, 100);
+  MidiBus.list();
+  myBus = new MidiBus(this, 1, -1);
 }
 
 void draw(){
