@@ -75,6 +75,7 @@ void noteOff(int channel, int pitch, int velocity) {
 
 void setup(){
   size(1920,1080);
+  fullScreen();
   dalpha = TWO_PI / numberOfPoints;
   x = new float[numberOfPoints];
   y = new float[numberOfPoints];
@@ -109,6 +110,20 @@ void drawEllipsePlot(int size, int r, int g, int b){
   }
 }
 
+void drawCurvePlot(int size, int r, int g, int b){
+  stroke(r, g, b);
+  strokeWeight(size);
+  noFill();
+  beginShape();
+  curveVertex(x[x.length-1], y[y.length-1]);
+  for (int i=0; i<numberOfPoints; i++) {
+    curveVertex(x[i], y[i]); 
+  }
+  curveVertex(x[0], y[0]);
+  curveVertex(x[1], y[1]);
+  endShape();
+}
+
 void drawLinePlot(int size, int r, int g, int b, boolean blur){
   stroke(r, g, b);
   strokeWeight(size);
@@ -128,11 +143,11 @@ void renderPlot(){
     drawEllipsePlot(16, 150, 200, 255);
   }
   else{
-    drawLinePlot(60, 60, 0, 0, false);
-    drawLinePlot(40, 100, 0, 0, false);
-    drawLinePlot(25, 150, 0, 0, false);
-    drawLinePlot(10, 255, 100, 100, false);
-    drawLinePlot(4, 255, 255, 255, false);
+    drawCurvePlot(60, 60, 0, 0);
+    drawCurvePlot(40, 100, 0, 0);
+    drawCurvePlot(25, 150, 0, 0);
+    drawCurvePlot(10, 255, 100, 100);
+    drawCurvePlot(4, 255, 255, 255);
   }
 }
 
