@@ -72,6 +72,7 @@ void noteOn(int channel, int pitch, int velocity) {
   if (pitch == 37) {
     settingsMode = !settingsMode;
   }
+  
   println();
   println("Note On:");
   println("--------");
@@ -152,6 +153,8 @@ void drawEllipsePlot(int size, int r, int g, int b){
     ellipse(x[i], y[i], size, size);
   }
 }
+
+
 void drawLinePlot(int size, int r, int g, int b){
   stroke(r, g, b);
   strokeWeight(size);
@@ -186,7 +189,7 @@ void renderPlot(){
   if (mode){
     drawEllipsePlot(16, 150, 200, 255);
   }
-  else{
+  else if (numberOfPoints > 1){
     drawCurvePlot(60, 60, 0, 0);
     drawCurvePlot(40, 100, 0, 0);
     drawCurvePlot(25, 150, 0, 0);
@@ -212,7 +215,7 @@ void renderPlot(){
 //    newNumberOfPoints += 1;
 //  }
 //  else if (key == '-') {
-//    newNumberOfPoints = max(numberOfPoints - 1, 1);
+//    newNumberOfPoints = max(numberOfPoints - 1, 0);
 //  }
   
 //  // ZMIANA PARAMETRÓW x/yParam
@@ -227,6 +230,13 @@ void renderPlot(){
 //  }
 //  if (key == 't') {
 //    newYParam -= 1; 
+//  }
+  
+//  if (key == 'q') {
+//    newDtheta -= .01; 
+//  }
+//  if (key == 'w') {
+//    newDtheta += .01;
 //  }
   
 //  // STRZAŁKI DO ZMIANY SKALI
